@@ -4,13 +4,24 @@
  * Registering a basic block with Gutenberg.
  * Simple block, renders and saves the same content without any interactivity.
  */
+import Inspector from './inspector';
 
 //  Import CSS.
 import './editor.scss';
 import './style.scss';
 
 const { __ } = wp.i18n; // Import __() from wp.i18n
-const { registerBlockType } = wp.blocks; // Import registerBlockType() from wp.blocks
+const { registerBlockType } = wp.blocks;
+const { PlainText } = wp.editor;
+
+function getRandomGifUrl( apiKey ) {
+	fetch( 'https://api.giphy.com/v1/gifs/random?rating=g&apiKey=' + apiKey )
+		.then( ( response ) => response.json() )
+		.then( function( res ) {
+			console.log( res.data.image_url );
+			return res.data.image_url;
+		} );
+}
 
 /**
  * Register: aa Gutenberg Block.
@@ -25,16 +36,28 @@ const { registerBlockType } = wp.blocks; // Import registerBlockType() from wp.b
  * @return {?WPBlock}          The block, if it has been successfully
  *                             registered; otherwise `undefined`.
  */
-registerBlockType( 'cgb/block-random-gif-block', {
+registerBlockType( 'grg/block-random-gif-block', {
 	// Block name. Block names must be string that contains a namespace prefix. Example: my-plugin/my-custom-block.
-	title: __( 'random-gif-block - CGB Block' ), // Block title.
-	icon: 'shield', // Block icon from Dashicons → https://developer.wordpress.org/resource/dashicons/.
-	category: 'common', // Block category — Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
+	title: __( 'Random Gif' ),
+	icon: 'shield',
+	category: 'common',
 	keywords: [
-		__( 'random-gif-block — CGB Block' ),
-		__( 'CGB Example' ),
-		__( 'create-guten-block' ),
+		__( 'gif' ),
+		__( 'giphy' ),
 	],
+
+	attributes: {
+		apiKey: {
+			type: 'string',
+			default: '',
+		},
+		randomGifUrl: {
+			type: 'string',
+			source: 'attribute',
+			selector: 'img',
+			attribute: 'src',
+		}
+	},
 
 	/**
 	 * The edit function describes the structure of your block in the context of the editor.
@@ -48,23 +71,15 @@ registerBlockType( 'cgb/block-random-gif-block', {
 	 * @returns {Mixed} JSX Component.
 	 */
 	edit: ( props ) => {
-		// Creates a <p class='wp-block-cgb-block-random-gif-block'></p>.
-		return (
-			<div className={ props.className }>
-				<p>— Hello from the backend.</p>
-				<p>
-					CGB BLOCK: <code>random-gif-block</code> is a new Gutenberg block
-				</p>
-				<p>
-					It was created via{ ' ' }
-					<code>
-						<a href="https://github.com/ahmadawais/create-guten-block">
-							create-guten-block
-						</a>
-					</code>.
-				</p>
+		const { attributes, setAttributes } = props;
+		let randomGifUrl = getRandomGifUrl( attributes.apiKey );
+
+		return [
+			<Inspector { ...{ setAttributes, ...props } } />,
+			<div>
+				<img src={ randomGifUrl } />
 			</div>
-		);
+		];
 	},
 
 	/**
@@ -79,20 +94,12 @@ registerBlockType( 'cgb/block-random-gif-block', {
 	 * @returns {Mixed} JSX Frontend HTML.
 	 */
 	save: ( props ) => {
+		const { attributes } = props;
+		let randomGifUrl = getRandomGifUrl( attributes.apiKey );
+
 		return (
 			<div className={ props.className }>
-				<p>— Hello from the frontend.</p>
-				<p>
-					CGB BLOCK: <code>random-gif-block</code> is a new Gutenberg block.
-				</p>
-				<p>
-					It was created via{ ' ' }
-					<code>
-						<a href="https://github.com/ahmadawais/create-guten-block">
-							create-guten-block
-						</a>
-					</code>.
-				</p>
+				<img src={ randomGifUrl } />
 			</div>
 		);
 	},
