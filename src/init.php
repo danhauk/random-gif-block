@@ -75,7 +75,7 @@ function random_gif_block_cgb_block_assets() { // phpcs:ignore
 	 * @since 1.16.0
 	 */
 	register_block_type(
-		'cgb/block-random-gif-block', array(
+		'grg/block-random-gif-block', array(
 			// Enqueue blocks.style.build.css on both frontend & backend.
 			'style'         => 'random_gif_block-cgb-style-css',
 			// Enqueue blocks.build.js in the editor only.
