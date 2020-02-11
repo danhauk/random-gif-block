@@ -3,6 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { Component, createRef } from '@wordpress/element';
+import { Button } from '@wordpress/components';
 
 const GIPHY_API_KEY = 'NhhRs0qhtbib0fq39VbKNVXdjpM1ZmGO';
 
@@ -48,10 +49,14 @@ class RandomGifEdit extends Component {
 		}
 
 		return(
-			<div>
+			<div className="wp-block-danhauk-random-gif-block">
 				{ attributes.giphyUrl && (
 					<iframe src={ attributes.giphyUrl } />
 				) }
+
+				<Button isDefault onClick={ this.getRandomGifUrl }>
+					{ __( 'Get new random GIF' ) }
+				</Button>
 			</div>
 		);
 	}
