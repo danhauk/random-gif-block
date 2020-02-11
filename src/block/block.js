@@ -40,8 +40,9 @@ registerBlockType( 'danhauk/random-gif-block', {
 	],
 
 	attributes: {
-		apiKey: {
+		rating: {
 			type: 'string',
+			default: 'g',
 		},
 		giphyUrl: {
 			type: 'string',
