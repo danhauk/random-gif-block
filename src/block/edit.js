@@ -50,7 +50,7 @@ class RandomGifEdit extends Component {
 	};
 
 	render() {
-		const { attributes, setAttributes } = this.props;
+		const { attributes, isSelected } = this.props;
 		const { rating } = attributes;
 
 		if ( ! attributes.giphyUrl ) {
@@ -80,9 +80,11 @@ class RandomGifEdit extends Component {
 					<iframe src={ attributes.giphyUrl } />
 				) }
 
-				<Button isDefault onClick={ this.getRandomGifUrl }>
-					{ __( 'Get new random GIF' ) }
-				</Button>
+				{ isSelected && (
+					<Button isDefault onClick={ this.getRandomGifUrl }>
+						{ __( 'Surprise me!' ) }
+					</Button>
+				) }
 			</div>
 		);
 	}
