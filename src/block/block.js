@@ -46,7 +46,16 @@ registerBlockType( 'danhauk/random-gif-block', {
 		},
 		giphyUrl: {
 			type: 'string',
-		}
+		},
+		giphyImage: {
+			type: 'object',
+		},
+		gifHeight: {
+			type: 'number',
+		},
+		gifWidth: {
+			type: 'number',
+		},
 	},
 
 	edit,

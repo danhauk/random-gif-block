@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { Component, createRef } from '@wordpress/element';
-import { Button, PanelBody, SelectControl } from '@wordpress/components';
+import { Button, PanelBody, SelectControl, ResizableBox } from '@wordpress/components';
 import { InspectorControls } from '@wordpress/block-editor';
 
 const GIPHY_API_KEY = 'NhhRs0qhtbib0fq39VbKNVXdjpM1ZmGO';
@@ -37,11 +37,17 @@ class RandomGifEdit extends Component {
 		xhr.send();
 	};
 
-	selectGif = randomGif => {
+	selectGif = giphyImage => {
 		const { setAttributes } = this.props;
-		const giphyUrl = randomGif.embed_url;
+		const giphyUrl = giphyImage.embed_url;
+		const { image_width, image_height, image_url } = giphyImage;
 
-		setAttributes( { giphyUrl } );
+		setAttributes( {
+			giphyImage,
+			giphyUrl: image_url,
+			gifHeight: image_height,
+			gifWidth: image_width,
+		} );
 	};
 
 	handleRatingSelect = rating => {
@@ -50,8 +56,8 @@ class RandomGifEdit extends Component {
 	};
 
 	render() {
-		const { attributes, isSelected } = this.props;
-		const { rating } = attributes;
+		const { attributes, setAttributes, isSelected, toggleSelection } = this.props;
+		const { rating, gifHeight, gifWidth, giphyUrl } = attributes;
 
 		if ( ! attributes.giphyUrl ) {
 			this.getRandomGifUrl();
@@ -77,7 +83,13 @@ class RandomGifEdit extends Component {
 				</InspectorControls>
 
 				{ attributes.giphyUrl && (
-					<iframe src={ attributes.giphyUrl } />
+				<div className="wp-block-danhauk-random-gif-block__image-container">
+					<img className="wp-block-danhauk-random-gif-block__image"
+						src={ giphyUrl }
+						width={ gifWidth }
+						height={ gifHeight }
+					/>
+				</div>
 				) }
 
 				{ isSelected && (

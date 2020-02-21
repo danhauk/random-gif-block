@@ -5,12 +5,12 @@ import { Component } from '@wordpress/element';
 
 class RandomGifSave extends Component {
 	render() {
-		const { attributes } = this.props;
+		const { giphyUrl } = this.props.attributes;
 
 		return(
 			<div>
-				{ attributes.giphyUrl && (
-					<iframe src={ attributes.giphyUrl } />
+				{ giphyUrl && (
+					<img className="wp-block-danhauk-random-gif-block__image" src={ giphyUrl } />
 				) }
 			</div>
 		);

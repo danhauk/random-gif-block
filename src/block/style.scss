@@ -7,7 +7,11 @@
 .wp-block-danhauk-random-gif-block {
 	text-align: center;
 
-	& iframe {
-		border: 0;
+	& .wp-block-danhauk-random-gif-block__image-container {
+		margin: auto;
 	}
+}
+
+.wp-block-danhauk-random-gif-block__image {
+	max-width: 100%;
 }
