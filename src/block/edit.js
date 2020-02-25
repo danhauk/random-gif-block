@@ -57,7 +57,7 @@ class RandomGifEdit extends Component {
 
 	render() {
 		const { attributes, setAttributes, isSelected, toggleSelection } = this.props;
-		const { rating, gifHeight, gifWidth, giphyUrl } = attributes;
+		const { rating, gifHeight, gifWidth, giphyUrl, width, height } = attributes;
 
 		if ( ! attributes.giphyUrl ) {
 			this.getRandomGifUrl();
@@ -83,13 +83,44 @@ class RandomGifEdit extends Component {
 				</InspectorControls>
 
 				{ attributes.giphyUrl && (
-				<div className="wp-block-danhauk-random-gif-block__image-container">
-					<img className="wp-block-danhauk-random-gif-block__image"
-						src={ giphyUrl }
-						width={ gifWidth }
-						height={ gifHeight }
-					/>
-				</div>
+					<ResizableBox
+						className="editor-media-container__resizer"
+						size={ {
+							height,
+							width,
+						} }
+						minHeight="50"
+						minWidth="50"
+						enable={ {
+							top: false,
+							right: true,
+							bottom: true,
+							left: false,
+							topRight: false,
+							bottomRight: true,
+							bottomLeft: false,
+							topLeft: false,
+						} }
+						onResizeStop={ ( event, direction, elt, delta ) => {
+							setAttributes( {
+								height: parseInt( elt.style.height + delta.height, 10 ),
+								width: parseInt( elt.style.width + delta.width, 10 ),
+							} );
+							toggleSelection( true );
+						} }
+						onResizeStart={ () => {
+							toggleSelection( false );
+						} }
+						showHandle={ true }
+						lockAspectRatio={ true }>
+						<div className="wp-block-danhauk-random-gif-block__image-container">
+							<img className="wp-block-danhauk-random-gif-block__image"
+								src={ giphyUrl }
+								width={ width }
+								height={ height }
+							/>
+						</div>
+					</ResizableBox>
 				) }
 
 				{ isSelected && (

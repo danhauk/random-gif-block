@@ -56,6 +56,13 @@ registerBlockType( 'danhauk/random-gif-block', {
 		gifWidth: {
 			type: 'number',
 		},
+		width: {
+			type: 'number',
+		},
+		height: {
+			type: 'number',
+		}
+
 	},
 
 	edit,
